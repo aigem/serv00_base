@@ -16,7 +16,7 @@ fi
 APP_PORT=$(grep "port:" "$CONFIG_FILE" | awk '{print $2}')
 WEBSITE_NAME=$(grep "your_website:" "$CONFIG_FILE" | awk '{print $2}')
 PROJECT_NAME=$(grep "project_name:" "$CONFIG_FILE" | awk '{print $2}')
-VIRTUAL_ENV=$(grep "virtual_env:" "$CONFIG_FILE" | awk '{print $2}')
+VIRTUAL_ENV=$(grep "python_virtualenv:" "$CONFIG_FILE" | awk '{print $2}')
 
 # 在生成 HTML 内容前添加检查
 if [ -z "$APP_PORT" ] || [ -z "$WEBSITE_NAME" ] || [ -z "$PROJECT_NAME" ]; then
