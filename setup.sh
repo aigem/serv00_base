@@ -198,18 +198,20 @@ rm -f "$USER_HOME/domains/$(whoami).serv00.net/public_html/index.html"
 rm -f "$USER_HOME/domains/$MY_SITE/public_html/index.html"
 
 # 生成 info.html 文件
+print_color $YELLOW "=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 chmod +x $USER_HOME/serv00_base/make_info.sh
 print_color $GREEN "生成 info.html 文件..."
 bash $USER_HOME/serv00_base/make_info.sh
 
 # 提示安装完成
+print_color $YELLOW "=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 print_color $GREEN "$PROJECT_NAME 当前服务运行在端口: $app_PORT"
 pm2 list
+print_color $RED "=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 print_color $YELLOW "=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
-print_color $GREEN "安装全部完成! Happy 白嫖! 请从【 http://$MY_SITE/info.html 】开始"
+print_color $GREEN "安装全部完成! Happy 白嫖! 请从【 http://$MY_SITE 】开始"
 print_color $YELLOW "=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
+print_color $RED "=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 
 # 返回项目目录
 cd "$USER_HOME/$PROJECT_NAME"
-
-print_color $GREEN "脚本执行完成。如遇到任何问题，请查看日志或README.md联系支持."

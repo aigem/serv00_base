@@ -7,17 +7,10 @@ USER_HOME="/usr/home/$(whoami)"
 BASH_PROFILE="$USER_HOME/.bash_profile"
 CONFIG_FILE="$USER_HOME/base/$(whoami).yaml"
 
-# 检查是否安装了 yq，如果没有则提示安装
-if ! command -v yq &> /dev/null; then
-    echo "错误：未找到 yq 命令。请安装 yq 以解析 YAML 文件。"
-    echo "可以使用 'npm install -g yq' 来安装。"
-    exit 1
-fi
-
-# 使用 yq 读取配置文件内容
-APP_PORT=$(yq e '.port' "$CONFIG_FILE")
-PROJECT_NAME=$(yq e '.project_name' "$CONFIG_FILE")
-PYTHON_VIRTUALENV=$(yq e '.python_virtualenv' "$CONFIG_FILE")
+# 使用 grep 和 awk 读取配置文件内容
+APP_PORT=$(grep "port:" "$CONFIG_FILE" | awk '{print $2}')
+PROJECT_NAME=$(grep "project_name:" "$CONFIG_FILE" | awk '{print $2}')
+PYTHON_VIRTUALENV=$(grep "python_virtualenv:" "$CONFIG_FILE" | awk '{print $2}')
 
 # 添加新的环境变量条目到 .bash_profile
 if ! grep -q 'export PATH="$USER_HOME/node_modules/pm2/bin:$PATH"' "$BASH_PROFILE"; then
@@ -75,9 +68,10 @@ fi
 # 一段时间后检查项目是否仍然运行
 sleep 10
 
-# 如果项目仍然没有启动，则尝试运动通知流程
+# 如果项目仍然没有启动，则尝试运行通知流程
 if ! pm2 list | grep -q "$PROJECT_NAME"; then
     # 这里需要根据实际情况修改通知命令  
+    echo "警告：$PROJECT_NAME 未能成功启动"
 fi
 
 # 添加日志功能
@@ -86,19 +80,13 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
 echo "$(date): 开始执行重启脚本"
 
-# 在运行 PM2 前添加检查
-if [ ! -f "$PM2_PATH" ]; then
-    echo "错误：PM2 未找到。请检查安装。"
-    exit 1
-fi
-
 # 在检查项目运行状态前添加延迟
 sleep 30
 
 # 如果项目仍然没有启动，则尝试重新启动
 if ! pm2 list | grep -q "$PROJECT_NAME"; then
     echo "警告：$PROJECT_NAME 未运行，尝试重新启动..."
-    pm2 start "$USER_HOME/$PROJECT_NAME/app.py" --name "$PROJECT_NAME" --interpreter "$VIRTUAL_ENV/bin/python" -- --port "$app_PORT"
+    pm2 start "$USER_HOME/$PROJECT_NAME/app.py" --name "$PROJECT_NAME" --interpreter "$PYTHON_VIRTUALENV/bin/python" -- --port "$APP_PORT"
 fi
 
 echo "$(date): 重启脚本执行完成"

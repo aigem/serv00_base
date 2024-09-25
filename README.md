@@ -54,14 +54,17 @@ serv00_base 是一个专为 serv00 免费主机设计的强大自动化部署工
 
 要部署您自己的应用：
 
-1. 将您的应用文件放在 `/usr/home/你的用户名/项目名称(默认为app)/` 目录下
-2. 放你的程序文件进来，或修改 `app.py`（对于 Python 应用）或创建您的主应用文件
-3. 更新 `requirements.txt`（对于 Python 应用）或 `package.json`（对于 Node.js 应用）,安装所需的依赖
+1. 将可在nodejs、python、rust、go、java等语言编写的程序放在 `/usr/home/你的用户名/项目名称(默认为app)/` 下
+2. 安装你程序的依赖（ssh 连接到服务器安装相关依赖。只能部署小项目，大项目免费的serv00部署不了）
 ```bash
 pip install -r requirements.txt
 或
 npm install
 ```
+3. 使用 pm2 命令启动您的程序
+4. 运行的端口必须为一键安装时绑定的端口
+5. 访问 绑定的域名 查看您的应用
+
 
 4. 使用 PM2 重新启动应用：
    ```bash

@@ -74,11 +74,10 @@ cat << EOF > /usr/home/$USERNAME/domains/$WEBSITE_NAME/public_html/info.html
 <body>
     <div class="container">
         <h1>部署成功！</h1>
+        <h3>返回应用 <a href="/">主页</a> | 访问<a href="https://github.com/aigem/serv00_base">Github</a></h3>
         <p>您的应用已成功部署。以下是关键配置信息：</p>
         <ul>
             <li>项目名称：<span class="highlight">$PROJECT_NAME</span></li>
-            <li>端口号：<span class="highlight">$APP_PORT</span></li>
-            <li>网站域名：<span class="highlight">$WEBSITE_NAME</span></li>
         </ul>
         
         <h2>注意事项</h2>
@@ -91,12 +90,13 @@ cat << EOF > /usr/home/$USERNAME/domains/$WEBSITE_NAME/public_html/info.html
             <li>PM2运行程序成功后，访问程序域名为：<span class="highlight">$WEBSITE_NAME</span></li>
         </ul>
         
-        <h2>下一步操作</h2>
+        <h2>下一步部署自己的程序</h2>
         <ol>
-            <li>修改配置文件中的 Project name (可不修改)</li>
-            <li>将您的程序文件放置在指定目录：/usr/home/$USERNAME/$PROJECT_NAME 下</li>
+            <li>将可在nodejs、python、rust、go、java等语言编写的程序放在 <code>/usr/home/$USERNAME/$PROJECT_NAME</code> 下</li>
             <li>使用 pm2 命令启动您的程序</li>
+            <li>运行的端口必须为 $APP_PORT</li>
             <li>访问 $WEBSITE_NAME 查看您的应用</li>
+            <li>具体查看 <a href="https://github.com/aigem/serv00_base">Github</a></li>
         </ol>
         
         <h2>常用命令</h2>
@@ -109,13 +109,11 @@ cat << EOF > /usr/home/$USERNAME/domains/$WEBSITE_NAME/public_html/info.html
         </ul>
         
         <h2>更多信息</h2>
-        <p>查看详细信息，请访问我的Github: <a href="https://github.com/aigem/serv00_base">Github</a></p>
-        
-        <p>如需更多帮助，请参考文档或联系管理员。</p>
+        <p>查看详细信息，请访问我的: <a href="https://github.com/aigem/serv00_base">Github</a></p>
     </div>
 </body>
 </html>
 EOF
 
 # 在文件末尾添加
-echo "info.html 文件已生成。"
+echo "info.html 文件已成功生成。"
