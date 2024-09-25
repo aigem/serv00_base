@@ -24,7 +24,7 @@ if [ -z "$APP_PORT" ] || [ -z "$WEBSITE_NAME" ] || [ -z "$PROJECT_NAME" ]; then
 fi
 
 # 生成 HTML 内容
-cat << EOF > info.html
+cat << EOF > /usr/home/$USERNAME/domains/$WEBSITE_NAME/public_html/info.html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
