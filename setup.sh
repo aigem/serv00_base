@@ -26,11 +26,6 @@ print_color() {
     echo -e "${color}${message}${NC}"
 }
 
-# 生成 info.html 文件
-chmod +x ./make_info.sh
-print_color $GREEN "生成 info.html 文件..."
-./make_info.sh
-
 # 复制 相关 文件
 cp reboot_run.sh "$USER_HOME/base/reboot_run.sh"
 chmod +x "$USER_HOME/base/reboot_run.sh"
@@ -181,6 +176,11 @@ EOF
 # 清理旧的 index.html 文件
 rm -f "$USER_HOME/domains/$(whoami).serv00.net/public_html/index.html"
 rm -f "$USER_HOME/domains/$MY_SITE/public_html/index.html"
+
+# 生成 info.html 文件
+chmod +x ./make_info.sh
+print_color $GREEN "生成 info.html 文件..."
+./make_info.sh
 
 # 提示安装完成
 print_color $GREEN "$PROJECT_NAME 当前服务运行在端口: $app_PORT"
