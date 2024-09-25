@@ -85,7 +85,7 @@ cat << EOF > /usr/home/$USERNAME/domains/$WEBSITE_NAME/public_html/info.html
             <li>请将您的程序文件放置在目录：<span class="highlight">/usr/home/$USERNAME/$PROJECT_NAME</span> 下。</li>
             <li>使用 <code>pm2</code> 命令来启动您的程序，例如：
                 <pre>pm2 start your_app.js --name $PROJECT_NAME --port $APP_PORT</pre>
-                <pre>pm2 start $USER_HOME/$PROJECT_NAME/app.py --name $PROJECT_NAME --port $APP_PORT --interpreter python</pre>
+                <pre>pm2 start "$USER_HOME/$PROJECT_NAME/app.py" --name "$PROJECT_NAME" --interpreter "$VIRTUAL_ENV/bin/python" -- --port "$APP_PORT"</pre>
                 <p>请将 app.py / your_app.js 替换为您的实际启动程序文件名。</p>
             </li>
             <li>您的后台程序运行的端口号为：<span class="highlight">$APP_PORT</span></li>
