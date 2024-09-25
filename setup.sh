@@ -60,7 +60,7 @@ while true; do
         app_PORT="$user_input"
         break
     else
-        print_color $RED "无效的输入。请输入有效的端口号 (1024-65535) 或 'add'。"
+        print_color $RED "无效的输入。请输入有效的端口号 (1024-65535) 或 'add'新增端口。"
     fi
 done
 
@@ -113,10 +113,10 @@ if [ -f "$BASH_PROFILE" ]; then
 fi
 
 echo "export PATH=\"$USER_HOME/node_modules/pm2/bin:\$PATH\"" >> "$BASH_PROFILE"
-echo 'export PYTHON_VIRTUAL_ENV="$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME"' >> "$BASH_PROFILE"
-echo 'export PATH="$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME/bin:$PATH"' >> "$BASH_PROFILE"
-echo 'export CFLAGS="-I/usr/local/include"' >> "$BASH_PROFILE"
-echo 'export CXXFLAGS="-I/usr/local/include"' >> "$BASH_PROFILE"
+echo "export PYTHON_VIRTUAL_ENV=\"$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME\"" >> "$BASH_PROFILE"
+echo "export PATH=\"$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME/bin:\$PATH\"" >> "$BASH_PROFILE"
+echo "export CFLAGS=\"-I/usr/local/include\"" >> "$BASH_PROFILE"
+echo "export CXXFLAGS=\"-I/usr/local/include\"" >> "$BASH_PROFILE"
 
 source "$BASH_PROFILE"
 

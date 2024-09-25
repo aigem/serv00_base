@@ -1,5 +1,4 @@
 # serv00_base
-
 serv00_base 是一个专为 serv00 免费主机设计的强大自动化部署工具。它能帮助用户在 serv00 上快速部署各种应用程序，包括 Node.js、Python、Go 和 Rust 等。
 
 ## 主要特性
