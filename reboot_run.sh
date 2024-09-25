@@ -79,3 +79,26 @@ sleep 10
 if ! pm2 list | grep -q "$PROJECT_NAME"; then
     # 这里需要根据实际情况修改通知命令  
 fi
+
+# 添加日志功能
+LOG_FILE="/usr/home/$(whoami)/$PROJECT_NAME/reboot_run.log"
+exec > >(tee -a "$LOG_FILE") 2>&1
+
+echo "$(date): 开始执行重启脚本"
+
+# 在运行 PM2 前添加检查
+if [ ! -f "$PM2_PATH" ]; then
+    echo "错误：PM2 未找到。请检查安装。"
+    exit 1
+fi
+
+# 在检查项目运行状态前添加延迟
+sleep 30
+
+# 如果项目仍然没有启动，则尝试重新启动
+if ! pm2 list | grep -q "$PROJECT_NAME"; then
+    echo "警告：$PROJECT_NAME 未运行，尝试重新启动..."
+    pm2 start "$USER_HOME/$PROJECT_NAME/app.py" --name "$PROJECT_NAME" --interpreter "$VIRTUAL_ENV/bin/python" -- --port "$app_PORT"
+fi
+
+echo "$(date): 重启脚本执行完成"

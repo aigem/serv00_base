@@ -24,6 +24,12 @@ APP_PORT=$(yq e '.port' "$CONFIG_FILE")
 WEBSITE_NAME=$(yq e '.your_website' "$CONFIG_FILE")
 PROJECT_NAME=$(yq e '.project_name' "$CONFIG_FILE")
 
+# 在生成 HTML 内容前添加检查
+if [ -z "$APP_PORT" ] || [ -z "$WEBSITE_NAME" ] || [ -z "$PROJECT_NAME" ]; then
+    echo "错误：无法从配置文件中读取所需信息。"
+    exit 1
+fi
+
 # 生成 HTML 内容
 cat << EOF > info.html
 <!DOCTYPE html>
@@ -68,4 +74,19 @@ cat << EOF > info.html
 </html>
 EOF
 
+# 在 HTML 内容中添加更多有用信息
+cat << EOF >> info.html
+    <h2>常用命令</h2>
+    <ul>
+        <li>查看应用日志：<code>pm2 logs $PROJECT_NAME</code></li>
+        <li>重启应用：<code>pm2 restart $PROJECT_NAME</code></li>
+        <li>停止应用：<code>pm2 stop $PROJECT_NAME</code></li>
+        <li>查看应用状态：<code>pm2 status</code></li>
+        <li>查看所有应用：<code>pm2 list</code></li>
+    </ul>
+    <h2>查看详细信息，请访问我的Github: <a href="https://github.com/aigem/serv00_base">Github</a></h2>
+    
+EOF
+
+# 在文件末尾添加
 echo "info.html 文件已生成。"

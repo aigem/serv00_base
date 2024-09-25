@@ -1,10 +1,10 @@
 #!/bin/bash
 
+# 设置错误处理
+set -euo pipefail
+
 # 设置项目（可不修改）
 PROJECT_NAME="app" # 项目文件夹
-
-# 设置错误处理
-set -e
 
 # 定义颜色变量
 RED='\033[0;31m'
@@ -27,6 +27,11 @@ print_color() {
 }
 
 # 复制 相关 文件
+if [ ! -f "reboot_run.sh" ] || [ ! -d "sample_app" ]; then
+    print_color $RED "错误: 必要的文件或目录不存在。请确保您在正确的目录中运行此脚本。"
+    exit 1
+fi
+
 cp reboot_run.sh "$USER_HOME/base/reboot_run.sh"
 chmod +x "$USER_HOME/base/reboot_run.sh"
 cp sample_app/app.py "$USER_HOME/$PROJECT_NAME/app.py"
@@ -47,6 +52,9 @@ while true; do
         print_color $GREEN "端口开通成功 "
         devil port list
         read -p "请输入刚才生成的端口号: " app_PORT
+        if ! [[ "$app_PORT" =~ ^[0-9]+$ ]] || [ "$app_PORT" -lt 1024 ] || [ "$app_PORT" -gt 65535 ]; then
+            print_color $RED "无效的端口号。请输入 1024-65535 之间的数字。"
+        fi
         break
     elif [[ "$user_input" =~ ^[0-9]+$ && "$user_input" -ge 1024 && "$user_input" -le 65535 ]]; then
         app_PORT="$user_input"
@@ -124,6 +132,11 @@ VIRTUAL_ENV_PATH="$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME"
 
 # 创建虚拟环境
 print_color $GREEN "正在创建虚拟环境..."
+if ! command -v virtualenv &> /dev/null; then
+    print_color $RED "错误: virtualenv 未安装。请先安装 virtualenv。"
+    exit 1
+fi
+
 virtualenv "$VIRTUAL_ENV_PATH"
 source "$VIRTUAL_ENV_PATH/bin/activate"
 
@@ -160,6 +173,11 @@ PM2_PATH=$(which pm2 | tr -d '\n')
 (crontab -l 2>/dev/null; echo "@reboot /usr/home/$(whoami)/base/reboot_run.sh") | crontab -
 
 # 生成配置文件
+if [ -z "$MY_SITE" ]; then
+    print_color $RED "错误: 网站未成功绑定。请检查之前的步骤。"
+    MY_SITE="未绑定,重新安装或自己在网页端后台进行设置"
+fi
+
 cat <<EOF > "$CONFIG_FILE"
 project_name: $PROJECT_NAME
 address: 0.0.0.0
@@ -191,3 +209,5 @@ print_color $YELLOW "=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 
 # 返回项目目录
 cd "$USER_HOME/$PROJECT_NAME"
+
+print_color $GREEN "脚本执行完成。如遇到任何问题，请查看日志或README.md联系支持."
