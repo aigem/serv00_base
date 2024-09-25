@@ -100,9 +100,11 @@ case "$user_input" in
 esac
 
 # 更新 .bash_profile
-sed -i.bak '/export PATH=".*\/node_modules\/pm2\/bin:$PATH"/d' "$BASH_PROFILE"
-sed -i.bak '/export CFLAGS="-I\/usr\/local\/include"/d' "$BASH_PROFILE"
-sed -i.bak '/export CXXFLAGS="-I\/usr\/local\/include"/d' "$BASH_PROFILE"
+if [ -f "$BASH_PROFILE" ]; then
+    sed -i.bak '/export PATH=".*\/node_modules\/pm2\/bin:$PATH"/d' "$BASH_PROFILE"
+    sed -i.bak '/export CFLAGS="-I\/usr\/local\/include"/d' "$BASH_PROFILE"
+    sed -i.bak '/export CXXFLAGS="-I\/usr\/local\/include"/d' "$BASH_PROFILE"
+fi
 
 echo "export PATH=\"$USER_HOME/node_modules/pm2/bin:\$PATH\"" >> "$BASH_PROFILE"
 echo 'export CFLAGS="-I/usr/local/include"' >> "$BASH_PROFILE"
