@@ -26,6 +26,8 @@ print_color() {
     echo -e "${color}${message}${NC}"
 }
 
+# 创建必要的目录
+mkdir -p "$USER_HOME/base" "$USER_HOME/$PROJECT_NAME"
 # 复制 相关 文件
 if [ ! -f "reboot_run.sh" ] || [ ! -d "sample_app" ]; then
     print_color $RED "错误: 必要的文件或目录不存在。请确保您在正确的目录中运行此脚本。"
@@ -36,9 +38,6 @@ cp reboot_run.sh "$USER_HOME/base/reboot_run.sh"
 chmod +x "$USER_HOME/base/reboot_run.sh"
 cp sample_app/app.py "$USER_HOME/$PROJECT_NAME/app.py"
 cp sample_app/requirements.txt "$USER_HOME/$PROJECT_NAME/requirements.txt"
-
-# 创建必要的目录
-mkdir -p "$USER_HOME/base" "$USER_HOME/$PROJECT_NAME"
 
 # 端口设置
 print_color $YELLOW "=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
