@@ -82,20 +82,23 @@ case "$user_input" in
             MY_SITE="$(whoami).serv00.net"
         else
             print_color $RED "新建网站失败，之后自行在网页端后台进行设置"
+            MY_SITE=""
         fi
         ;;
     no)
         print_color $BLUE "跳过网站设置。之后可自行在网页端后台进行设置。"
+        MY_SITE=""
         ;;
     *)
         custom_domain="$user_input"
-        devil www del "$custom_domain" &> /dev/null
+        devil www del "$custom_domain"
         ADD_WWW_OUTPUT=$(devil www add "$custom_domain" proxy localhost "$app_PORT")
         if echo "$ADD_WWW_OUTPUT" | grep -q "Domain added succesfully"; then
             print_color $GREEN "网站 $custom_domain 成功绑定。"
             MY_SITE="$custom_domain"
         else
-            print_color $RED "新建网站失败，是否解析到本机IP。你之后可自行在网页端后台进行设置"
+            print_color $RED "绑定网站失败，域名是否解析到本机IP。你之后可自行在网页端后台进行设置"
+            MY_SITE=""
         fi
         ;;
 esac
@@ -105,9 +108,13 @@ if [ -f "$BASH_PROFILE" ]; then
     sed -i.bak '/export PATH=".*\/node_modules\/pm2\/bin:$PATH"/d' "$BASH_PROFILE"
     sed -i.bak '/export CFLAGS="-I\/usr\/local\/include"/d' "$BASH_PROFILE"
     sed -i.bak '/export CXXFLAGS="-I\/usr\/local\/include"/d' "$BASH_PROFILE"
+    sed -i.bak '/export PYTHON_VIRTUAL_ENV="$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME"/d' "$BASH_PROFILE"
+    sed -i.bak '/export PATH="$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME/bin:$PATH"/d' "$BASH_PROFILE"
 fi
 
 echo "export PATH=\"$USER_HOME/node_modules/pm2/bin:\$PATH\"" >> "$BASH_PROFILE"
+echo 'export PYTHON_VIRTUAL_ENV="$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME"' >> "$BASH_PROFILE"
+echo 'export PATH="$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME/bin:$PATH"' >> "$BASH_PROFILE"
 echo 'export CFLAGS="-I/usr/local/include"' >> "$BASH_PROFILE"
 echo 'export CXXFLAGS="-I/usr/local/include"' >> "$BASH_PROFILE"
 
@@ -172,14 +179,17 @@ pm2 save
 
 # 设置重启后的自动 reboot_run.sh
 PM2_PATH=$(which pm2 | tr -d '\n')
-(crontab -l 2>/dev/null; echo "@reboot /usr/home/$(whoami)/base/reboot_run.sh") | crontab -
+# crontab中没有运行reboot_run.sh的才添加，有了就不添加了
+if ! crontab -l | grep -q "$USER_HOME/base/reboot_run.sh"; then
+    (crontab -l 2>/dev/null; echo "@reboot $USER_HOME/base/reboot_run.sh") | crontab -
+fi
 
-# 生成配置文件
 if [ -z "$MY_SITE" ]; then
     print_color $RED "错误: 网站未成功绑定。请检查之前的步骤。"
     MY_SITE="未绑定,重新安装或自己在网页端后台进行设置"
 fi
 
+# 生成配置文件
 cat <<EOF > "$CONFIG_FILE"
 project_name: $PROJECT_NAME
 address: 0.0.0.0

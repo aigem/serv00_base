@@ -115,5 +115,9 @@ cat << EOF > /usr/home/$USERNAME/domains/$WEBSITE_NAME/public_html/info.html
 </html>
 EOF
 
-# 在文件末尾添加
-echo "info.html 文件已成功生成。"
+# 检查/usr/home/$USERNAME/domains/$WEBSITE_NAME/public_html/info.html是否存在
+if [ -f "/usr/home/$USERNAME/domains/$WEBSITE_NAME/public_html/info.html" ]; then
+    echo "info.html 文件已成功生成。"
+else
+    echo "info.html 文件生成失败。"
+fi
