@@ -27,7 +27,7 @@ serv00_base 是一个专为 serv00 免费主机设计的强大自动化部署工
 
 2. 克隆仓库并进入项目目录：
    ```bash
-   git clone https://github.com/aigem/serv00_base.git
+   git clone --depth=1 https://github.com/aigem/serv00_base.git
    cd serv00_base
    bash setup.sh
    ```

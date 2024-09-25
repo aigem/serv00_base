@@ -3,8 +3,9 @@
 # 设置错误处理
 set -euo pipefail
 
-# 设置项目（可不修改）
-PROJECT_NAME="app" # 项目文件夹
+# 设置项目（可不修改）用户输入项目名称，不输入则默认为app
+read -p "根据你的喜好，输入项目名称(英文)（回车默认为app）: " PROJECT_NAME
+PROJECT_NAME=${PROJECT_NAME:-app} # 项目名称=项目文件夹名称
 
 # 定义颜色变量
 RED='\033[0;31m'
@@ -197,9 +198,9 @@ rm -f "$USER_HOME/domains/$(whoami).serv00.net/public_html/index.html"
 rm -f "$USER_HOME/domains/$MY_SITE/public_html/index.html"
 
 # 生成 info.html 文件
-chmod +x ./make_info.sh
+chmod +x $USER_HOME/serv00_base/make_info.sh
 print_color $GREEN "生成 info.html 文件..."
-./make_info.sh
+bash $USER_HOME/serv00_base/make_info.sh
 
 # 提示安装完成
 print_color $GREEN "$PROJECT_NAME 当前服务运行在端口: $app_PORT"
