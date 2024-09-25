@@ -108,13 +108,12 @@ if [ -f "$BASH_PROFILE" ]; then
     sed -i.bak '/export PATH=".*\/node_modules\/pm2\/bin:$PATH"/d' "$BASH_PROFILE"
     sed -i.bak '/export CFLAGS="-I\/usr\/local\/include"/d' "$BASH_PROFILE"
     sed -i.bak '/export CXXFLAGS="-I\/usr\/local\/include"/d' "$BASH_PROFILE"
-    sed -i.bak '/export PYTHON_VIRTUAL_ENV="$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME"/d' "$BASH_PROFILE"
-    sed -i.bak '/export PATH="$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME/bin:$PATH"/d' "$BASH_PROFILE"
+    sed -i.bak '/export PATH="$USER_HOME\/$PROJECT_NAME\/venv_$PROJECT_NAME\/bin:$PATH"/d' "$BASH_PROFILE"
 fi
 
 echo "export PATH=\"$USER_HOME/node_modules/pm2/bin:\$PATH\"" >> "$BASH_PROFILE"
-echo "export PYTHON_VIRTUAL_ENV=\"$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME\"" >> "$BASH_PROFILE"
-echo "export PATH=\"$USER_HOME/$PROJECT_NAME/venv_$PROJECT_NAME/bin:\$PATH\"" >> "$BASH_PROFILE"
+echo "export PYTHON_VIRTUAL_ENV=\"$USER_HOME/${PROJECT_NAME}/venv_${PROJECT_NAME}\"" >> "$BASH_PROFILE"
+echo "export PATH=\"$USER_HOME/${PROJECT_NAME}/venv_${PROJECT_NAME}/bin:\$PATH\"" >> "$BASH_PROFILE"
 echo "export CFLAGS=\"-I/usr/local/include\"" >> "$BASH_PROFILE"
 echo "export CXXFLAGS=\"-I/usr/local/include\"" >> "$BASH_PROFILE"
 
