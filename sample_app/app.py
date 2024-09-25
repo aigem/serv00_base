@@ -50,7 +50,7 @@ def home():
             <div class="success-icon">&#10004;</div>
             <h1>Serv00 应用部署成功</h1>
             <p>恭喜！您的 Flask 应用已成功部署在 Serv00 上。</p>
-            <h3>访问部署详情页 <a href="http://{{ request.host }}/info.html">访问详情页</a></h3>
+            <h3>访问部署详情页 <a href="http://{{ request.host }}/info.html">查看部署详情</a></h3>
         </div>
     </body>
     </html>
