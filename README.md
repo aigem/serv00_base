@@ -19,27 +19,22 @@ serv00_base 是一个专为 serv00 免费主机设计的强大自动化部署工
 
 ## 快速开始
 
-1. 登录您的 serv00 账户
+1. 在命令行中连接您的 serv00 的 ssh 服务器
+    ```bash
+    ssh sevr00用户名@sevr00用户名.serv00.net
+    ```
+以上信息注册成功后收到的邮件中查看
 
 2. 克隆仓库并进入项目目录：
    ```bash
    git clone https://github.com/aigem/serv00_base.git
    cd serv00_base
-   ```
-
-3. 安装依赖：
-   ```bash
-   npm install
-   ```
-
-4. 运行安装脚本：
-   ```bash
    bash setup.sh
    ```
 
-5. 按照提示完成配置过程
+3. 按照提示完成配置过程
 
-6. 安装完成后，访问生成的 info.html 页面查看部署详情
+4. 安装完成后，访问生成的 info.html 页面查看部署详情
 
 ## 配置文件说明
 
@@ -49,21 +44,29 @@ serv00_base 是一个专为 serv00 免费主机设计的强大自动化部署工
 - `port`: 应用程序运行的端口号
 - `your_website`: 绑定的域名
 - `python_virtualenv`: Python 虚拟环境路径（如果适用）
+- `python_virtualenv_name`: Python 虚拟环境名称（如果适用）
+……
 
 ## 示例应用
 
-安装过程会部署一个基于 Flask 的示例应用。您可以在 `/usr/home/你的用户名/app/` 目录下找到并修改这个应用。
+安装过程会部署一个基于 Flask 的示例应用。您可以在 `/usr/home/你的用户名/项目名称(默认为app)/` 目录下找到并修改这个应用。
 
 ## 自定义应用部署
 
 要部署您自己的应用：
 
-1. 将您的应用文件放在 `/usr/home/你的用户名/app/` 目录下
-2. 修改 `app.py`（对于 Python 应用）或创建您的主应用文件
-3. 更新 `requirements.txt`（对于 Python 应用）或安装所需的依赖
+1. 将您的应用文件放在 `/usr/home/你的用户名/项目名称(默认为app)/` 目录下
+2. 放你的程序文件进来，或修改 `app.py`（对于 Python 应用）或创建您的主应用文件
+3. 更新 `requirements.txt`（对于 Python 应用）或 `package.json`（对于 Node.js 应用）,安装所需的依赖
+```bash
+pip install -r requirements.txt
+或
+npm install
+```
+
 4. 使用 PM2 重新启动应用：
    ```bash
-   pm2 restart app
+   pm2 restart 项目名称(默认为app)
    ```
 
 ## 常见问题解决
@@ -77,8 +80,7 @@ serv00_base 是一个专为 serv00 免费主机设计的强大自动化部署工
 如果在安装或使用过程中遇到问题,请尝试以下步骤:
 
 1. 检查日志文件：
-   - 安装日志: `/usr/home/你的用户名/serv00_base_install.log`
-   - 重启脚本日志: `/usr/home/你的用户名/reboot_run.log`
+待完善
 
 2. 确保所有必要的依赖都已正确安装：
    ```bash
