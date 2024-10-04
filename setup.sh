@@ -179,8 +179,12 @@ pm2 save
 # 设置重启后的自动 reboot_run.sh
 PM2_PATH=$(which pm2 | tr -d '\n')
 # crontab中没有运行reboot_run.sh的才添加，有了就不添加了
-if ! crontab -l | grep -q "$USER_HOME/base/reboot_run.sh"; then
+if ! crontab -l | grep -q "@reboot $USER_HOME/base/reboot_run.sh"; then
     (crontab -l 2>/dev/null; echo "@reboot $USER_HOME/base/reboot_run.sh") | crontab -
+fi
+
+if ! crontab -l | grep -q "0 \*/* \* \* \* $USER_HOME/base/reboot_run.sh"; then
+    (crontab -l 2>/dev/null; echo "0 */3 * * * $USER_HOME/base/reboot_run.sh") | crontab -
 fi
 
 if [ -z "$MY_SITE" ]; then

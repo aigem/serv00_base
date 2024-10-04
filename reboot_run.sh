@@ -2,10 +2,17 @@
 
 # 系统重启后运行本脚本。
 
+# 获取当前时间并格式化
+timestamp1=$(date +"%Y-%m-%d %H:%M:%S")
+
+# 将时间戳写入新的一行到 reboot_log.txt
+echo "开始：$timestamp1" >> reboot_log.txt
+
 # 定义用户目录
 USER_HOME="/usr/home/$(whoami)"
 BASH_PROFILE="$USER_HOME/.bash_profile"
 CONFIG_FILE="$USER_HOME/base/$(whoami).yaml"
+WEBHOOK_URL=""
 
 # 使用 grep 和 awk 读取配置文件内容
 APP_PORT=$(grep "port:" "$CONFIG_FILE" | awk '{print $2}')
@@ -55,12 +62,13 @@ sleep 5
 # resurrect后检查指定项目是否启动
 if ! pm2 list | grep -q "$PROJECT_NAME"; then
     echo "项目 $PROJECT_NAME 未启动，正在尝试启动..."
-    # 假设项目在 $USER_HOME/$PROJECT_NAME 目录下
-    cd "$USER_HOME/$PROJECT_NAME"
-    pm2 restart $PROJECT_NAME --interpreter python -- --port $APP_PORT
-    
+    pm2 restart all
+
+    # 检查是否启动成功
     if [ $? -ne 0 ]; then
         echo "项目启动失败，请检查配置和代码"
+        # 向webhook发送通知
+        curl -X POST -H "Content-Type: application/json" -d '{"text": "项目启动失败，请检查配置和代码"}' $WEBHOOK_URL
         exit 1
     fi
 fi
@@ -74,19 +82,8 @@ if ! pm2 list | grep -q "$PROJECT_NAME"; then
     echo "警告：$PROJECT_NAME 未能成功启动"
 fi
 
-# 添加日志功能
-LOG_FILE="/usr/home/$(whoami)/$PROJECT_NAME/reboot_run.log"
-exec > >(tee -a "$LOG_FILE") 2>&1
+# 获取当前时间并格式化
+timestamp2=$(date +"%Y-%m-%d %H:%M:%S")
 
-echo "$(date): 开始执行重启脚本"
-
-# 在检查项目运行状态前添加延迟
-sleep 30
-
-# 如果项目仍然没有启动，则尝试重新启动
-if ! pm2 list | grep -q "$PROJECT_NAME"; then
-    echo "警告：$PROJECT_NAME 未运行，尝试重新启动..."
-    pm2 start "$USER_HOME/$PROJECT_NAME/app.py" --name "$PROJECT_NAME" --interpreter "$PYTHON_VIRTUALENV/bin/python" -- --port "$APP_PORT"
-fi
-
-echo "$(date): 重启脚本执行完成"
+# 将时间戳写入新的一行到 reboot_log.txt
+echo "结束：$timestamp2" >> reboot_log.txt
