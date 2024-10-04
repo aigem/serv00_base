@@ -155,6 +155,6 @@ serv00_base/
 如有任何问题或建议，请通过以下方式联系我们：
 
 - 项目 Issues: [https://github.com/aigem/serv00_base/issues](https://github.com/aigem/serv00_base/issues)
-- 邮箱: [your-email@example.com](mailto:your-email@example.com)
+- 邮箱: [fuliai@outlook.com](mailto:fuliai@outlook.com)
 
 感谢您使用 serv00_base！祝您在 serv00 上享受愉快的部署体验！
